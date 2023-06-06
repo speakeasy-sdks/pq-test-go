@@ -21,11 +21,9 @@ jobs:
       languages: |
         - go
       mode: pr
-      openapi_doc_auth_header: x-api-key
       openapi_docs: |
-        - https://prod.speakeasyapi.dev/v1/apis/pq-c1-test/version/v0.1.0/schema/download
+        - https://insulator.conductor.one/api/v1/openapi.yaml
       speakeasy_version: latest
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      openapi_doc_auth_token: ${{ secrets.SPEAKEASY_API_KEY }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_PROD_API_KEY }}

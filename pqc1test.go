@@ -58,7 +58,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 	return ServerList[c.ServerIndex], c.ServerDefaults[c.ServerIndex]
 }
 
-// PqC1Test - The ConductorOne API is a HTTP API for managing ConductorOne resources.
+// PqC1Test - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type PqC1Test struct {
 	Auth *auth
 	User *user
@@ -122,8 +122,8 @@ func New(opts ...SDKOption) *PqC1Test {
 	sdk := &PqC1Test{
 		sdkConfiguration: sdkConfiguration{
 			Language:   "go",
-			SDKVersion: "1.0.0",
-			GenVersion: "2.35.7",
+			SDKVersion: "1.0.1",
+			GenVersion: "2.35.9",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "invalid-example",

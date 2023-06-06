@@ -220,7 +220,7 @@ paths:
                     description: Succesful response
 servers:
     - description: The ConductorOne API server for the current tenant.
-      url: https://invalid-example.pquerna.dev.ductone.com:2443
+      url: https://{tenantDomain}.pquerna.dev.ductone.com:2443
       variables:
         tenantDomain:
             default: invalid-example

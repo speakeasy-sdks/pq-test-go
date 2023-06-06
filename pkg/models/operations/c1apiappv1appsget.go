@@ -7,14 +7,14 @@ import (
 	"pq-c1-test/pkg/models/shared"
 )
 
-type C1APIUserV1UserServiceGetRequest struct {
+type C1APIAppV1AppsGetRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-type C1APIUserV1UserServiceGetResponse struct {
+type C1APIAppV1AppsGetResponse struct {
 	ContentType string
 	StatusCode  int
 	RawResponse *http.Response
 	// Successful response
-	C1APIUserV1UserServiceGetResponse *shared.C1APIUserV1UserServiceGetResponse
+	C1APIAppV1GetAppResponse *shared.C1APIAppV1GetAppResponse
 }

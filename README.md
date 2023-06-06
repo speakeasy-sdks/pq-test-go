@@ -17,18 +17,23 @@ import(
 	"context"
 	"log"
 	"pq-c1-test"
+	"pq-c1-test/pkg/models/operations"
 )
 
 func main() {
     s := pqc1test.New()
 
     ctx := context.Background()
-    res, err := s.Auth.Introspect(ctx)
+    res, err := s.C1APIAppV1AppResourceServiceGet(ctx, operations.C1APIAppV1AppResourceServiceGetRequest{
+        AppID: "corrupti",
+        AppResourceTypeID: "provident",
+        ID: "bd9d8d69-a674-4e0f-867c-c8796ed151a0",
+    })
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.IntrospectResponse != nil {
+    if res.C1APIAppV1AppResourceServiceGetResponse != nil {
         // handle response
     }
 }
@@ -38,14 +43,17 @@ func main() {
 <!-- Start SDK Available Operations -->
 ## Available Resources and Operations
 
+### [PqC1Test SDK](docs/pqc1test/README.md)
 
-### [Auth](docs/auth/README.md)
-
-* [Introspect](docs/auth/README.md#introspect) - Invokes the c1.api.auth.v1.Auth.Introspect method.
-
-### [User](docs/user/README.md)
-
-* [Get](docs/user/README.md#get) - Invokes the c1.api.user.v1.UserService.Get method.
+* [C1APIAppV1AppResourceServiceGet](docs/pqc1test/README.md#c1apiappv1appresourceserviceget) - Invokes the c1.api.app.v1.AppResourceService.Get method.
+* [C1APIAppV1AppResourceTypeServiceGet](docs/pqc1test/README.md#c1apiappv1appresourcetypeserviceget) - Invokes the c1.api.app.v1.AppResourceTypeService.Get method.
+* [C1APIAppV1AppsGet](docs/pqc1test/README.md#c1apiappv1appsget) - Invokes the c1.api.app.v1.Apps.Get method.
+* [C1APIAuthV1AuthIntrospect](docs/pqc1test/README.md#c1apiauthv1authintrospect) - Invokes the c1.api.auth.v1.Auth.Introspect method.
+* [C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlements](docs/pqc1test/README.md#c1apirequestcatalogv1requestcatalogsearchservicesearchentitlements) - Invokes the c1.api.requestcatalog.v1.RequestCatalogSearchService.SearchEntitlements method.
+* [C1APITaskV1TaskServiceCreateGrantTask](docs/pqc1test/README.md#c1apitaskv1taskservicecreategranttask) - Invokes the c1.api.task.v1.TaskService.CreateGrantTask method.
+* [C1APITaskV1TaskServiceCreateRevokeTask](docs/pqc1test/README.md#c1apitaskv1taskservicecreaterevoketask) - Invokes the c1.api.task.v1.TaskService.CreateRevokeTask method.
+* [C1APITaskV1TaskServiceGet](docs/pqc1test/README.md#c1apitaskv1taskserviceget) - Invokes the c1.api.task.v1.TaskService.Get method.
+* [C1APIUserV1UserServiceGet](docs/pqc1test/README.md#c1apiuserv1userserviceget) - Invokes the c1.api.user.v1.UserService.Get method.
 <!-- End SDK Available Operations -->
 
 ### Maturity

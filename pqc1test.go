@@ -3,16 +3,22 @@
 package pqc1test
 
 import (
+	"bytes"
+	"context"
 	"fmt"
+	"io"
 	"net/http"
+	"pq-c1-test/pkg/models/operations"
+	"pq-c1-test/pkg/models/shared"
 	"pq-c1-test/pkg/utils"
+	"strings"
 	"time"
 )
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
 	// The ConductorOne API server for the current tenant.
-	"https://invalid-example.pquerna.dev.ductone.com:2443",
+	"https://{tenantDomain}.conductor.one",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -58,11 +64,8 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 	return ServerList[c.ServerIndex], c.ServerDefaults[c.ServerIndex]
 }
 
-// PqC1Test - The ConductorOne API is a HTTP API for managing ConductorOne resources.
+// PqC1Test - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type PqC1Test struct {
-	Auth *auth
-	User *user
-
 	sdkConfiguration sdkConfiguration
 }
 
@@ -122,8 +125,8 @@ func New(opts ...SDKOption) *PqC1Test {
 	sdk := &PqC1Test{
 		sdkConfiguration: sdkConfiguration{
 			Language:   "go",
-			SDKVersion: "1.0.0",
-			GenVersion: "2.35.7",
+			SDKVersion: "1.0.1",
+			GenVersion: "2.35.9",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "invalid-example",
@@ -143,9 +146,509 @@ func New(opts ...SDKOption) *PqC1Test {
 		sdk.sdkConfiguration.SecurityClient = sdk.sdkConfiguration.DefaultClient
 	}
 
-	sdk.Auth = newAuth(sdk.sdkConfiguration)
-
-	sdk.User = newUser(sdk.sdkConfiguration)
-
 	return sdk
+}
+
+// C1APIAppV1AppResourceServiceGet - Invokes the c1.api.app.v1.AppResourceService.Get method.
+func (s *PqC1Test) C1APIAppV1AppResourceServiceGet(ctx context.Context, request operations.C1APIAppV1AppResourceServiceGetRequest) (*operations.C1APIAppV1AppResourceServiceGetResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/resource_types/{app_resource_type_id}/resource/{id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIAppV1AppResourceServiceGetResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APIAppV1AppResourceServiceGetResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APIAppV1AppResourceServiceGetResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APIAppV1AppResourceTypeServiceGet - Invokes the c1.api.app.v1.AppResourceTypeService.Get method.
+func (s *PqC1Test) C1APIAppV1AppResourceTypeServiceGet(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceGetRequest) (*operations.C1APIAppV1AppResourceTypeServiceGetResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/resource_types/{id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIAppV1AppResourceTypeServiceGetResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APIAppV1AppResourceTypeServiceGetResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APIAppV1AppResourceTypeServiceGetResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APIAppV1AppsGet - Invokes the c1.api.app.v1.Apps.Get method.
+func (s *PqC1Test) C1APIAppV1AppsGet(ctx context.Context, request operations.C1APIAppV1AppsGetRequest) (*operations.C1APIAppV1AppsGetResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIAppV1AppsGetResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APIAppV1GetAppResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APIAppV1GetAppResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APIAuthV1AuthIntrospect - Invokes the c1.api.auth.v1.Auth.Introspect method.
+func (s *PqC1Test) C1APIAuthV1AuthIntrospect(ctx context.Context) (*operations.C1APIAuthV1AuthIntrospectResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/auth/introspect"
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIAuthV1AuthIntrospectResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APIAuthV1IntrospectResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APIAuthV1IntrospectResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlements - Invokes the c1.api.requestcatalog.v1.RequestCatalogSearchService.SearchEntitlements method.
+func (s *PqC1Test) C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlements(ctx context.Context, request shared.C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlementsRequest) (*operations.C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlementsResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/search/request_catalog/entitlements"
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	if err != nil {
+		return nil, fmt.Errorf("error serializing request body: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	req.Header.Set("Content-Type", reqContentType)
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlementsResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlementsResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlementsResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APITaskV1TaskServiceCreateGrantTask - Invokes the c1.api.task.v1.TaskService.CreateGrantTask method.
+func (s *PqC1Test) C1APITaskV1TaskServiceCreateGrantTask(ctx context.Context, request shared.C1APITaskV1TaskServiceCreateGrantRequest) (*operations.C1APITaskV1TaskServiceCreateGrantTaskResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/task/grant"
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	if err != nil {
+		return nil, fmt.Errorf("error serializing request body: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	req.Header.Set("Content-Type", reqContentType)
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APITaskV1TaskServiceCreateGrantTaskResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APITaskV1TaskServiceCreateGrantResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APITaskV1TaskServiceCreateGrantResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APITaskV1TaskServiceCreateRevokeTask - Invokes the c1.api.task.v1.TaskService.CreateRevokeTask method.
+func (s *PqC1Test) C1APITaskV1TaskServiceCreateRevokeTask(ctx context.Context, request shared.C1APITaskV1TaskServiceCreateRevokeRequest) (*operations.C1APITaskV1TaskServiceCreateRevokeTaskResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/task/revoke"
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	if err != nil {
+		return nil, fmt.Errorf("error serializing request body: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	req.Header.Set("Content-Type", reqContentType)
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APITaskV1TaskServiceCreateRevokeTaskResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APITaskV1TaskServiceCreateRevokeResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APITaskV1TaskServiceCreateRevokeResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APITaskV1TaskServiceGet - Invokes the c1.api.task.v1.TaskService.Get method.
+func (s *PqC1Test) C1APITaskV1TaskServiceGet(ctx context.Context, request operations.C1APITaskV1TaskServiceGetRequest) (*operations.C1APITaskV1TaskServiceGetResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/tasks/{id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APITaskV1TaskServiceGetResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APITaskV1TaskServiceGetResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APITaskV1TaskServiceGetResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APIUserV1UserServiceGet - Invokes the c1.api.user.v1.UserService.Get method.
+func (s *PqC1Test) C1APIUserV1UserServiceGet(ctx context.Context, request operations.C1APIUserV1UserServiceGetRequest) (*operations.C1APIUserV1UserServiceGetResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/users/{id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+
+	client := s.sdkConfiguration.DefaultClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIUserV1UserServiceGetResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.C1APIUserV1UserServiceGetResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.C1APIUserV1UserServiceGetResponse = out
+		}
+	}
+
+	return res, nil
 }

@@ -1,0 +1,231 @@
+components:
+    schemas:
+        c1.api.auth.v1.IntrospectResponse:
+            x-speakeasy-name-override: IntrospectResponse
+            description: The IntrospectResponse message.
+            properties:
+                accessTokenId:
+                    type: string
+                features:
+                    description: The features field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                permissions:
+                    description: The permissions field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                principleId:
+                    type: string
+                roles:
+                    description: The roles field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                tenantId:
+                    type: string
+                userId:
+                    type: string
+            type: object
+        c1.api.user.v1.User:
+            x-speakeasy-name-override: User
+            description: The User message.
+            properties:
+                createdAt:
+                    format: date-time
+                    type: string
+                delegatedUserId:
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                department:
+                    type: string
+                departmentSources:
+                    description: The departmentSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                directoryIds:
+                    description: The directoryIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                directoryStatus:
+                    description: The directoryStatus field.
+                    enum:
+                        - UNKNOWN
+                        - ENABLED
+                        - DISABLED
+                        - DELETED
+                    type: string
+                directoryStatusSources:
+                    description: The directoryStatusSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                displayName:
+                    type: string
+                email:
+                    type: string
+                employmentStatus:
+                    type: string
+                employmentStatusSources:
+                    description: The employmentStatusSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                employmentType:
+                    type: string
+                employmentTypeSources:
+                    description: The employmentTypeSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                id:
+                    type: string
+                jobTitle:
+                    type: string
+                jobTitleSources:
+                    description: The jobTitleSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                managerIds:
+                    description: The managerIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                managerSources:
+                    description: The managerSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                roleIds:
+                    description: The roleIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                status:
+                    description: The status field.
+                    enum:
+                        - UNKNOWN
+                        - ENABLED
+                        - DISABLED
+                        - DELETED
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+        c1.api.user.v1.UserAttributeMappingSource:
+            x-speakeasy-name-override: UserAttributeMappingSource
+            description: The UserAttributeMappingSource message.
+            properties:
+                appId:
+                    type: string
+                appUserId:
+                    type: string
+                appUserProfileAttributeKey:
+                    type: string
+                userAttributeMappingId:
+                    type: string
+                value:
+                    type: string
+            type: object
+        c1.api.user.v1.UserServiceGetResponse:
+            x-speakeasy-name-override: UserServiceGetResponse
+            description: The UserServiceGetResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                userView:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserView'
+            type: object
+        c1.api.user.v1.UserView:
+            x-speakeasy-name-override: UserView
+            description: The UserView message.
+            properties:
+                delegatedUserPath:
+                    type: string
+                directoriesPath:
+                    type: string
+                managersPath:
+                    type: string
+                rolesPath:
+                    type: string
+                user:
+                    $ref: '#/components/schemas/c1.api.user.v1.User'
+            type: object
+info:
+    description: The ConductorOne API is a HTTP API for managing ConductorOne resources.
+    title: ConductorOne API
+    version: 0.1.0-alpha
+openapi: 3.1.0
+paths:
+    /api/v1/auth/introspect:
+        get:
+            description: Invokes the c1.api.auth.v1.Auth.Introspect method.
+            operationId: c1.api.auth.v1.Auth.Introspect
+            x-speakeasy-name-override: introspect
+            x-speakeasy-group: auth
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.auth.v1.IntrospectResponse'
+                    description: Succesful response
+    /api/v1/user/get/{id}:
+        get:
+            description: Invokes the c1.api.user.v1.UserService.Get method.
+            operationId: c1.api.user.v1.UserService.Get
+            x-speakeasy-group: user
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.user.v1.UserServiceGetResponse'
+                    description: Succesful response
+servers:
+    - description: The ConductorOne API server for the current tenant.
+      url: https://invalid-example.pquerna.dev.ductone.com:2443
+      variables:
+        tenantDomain:
+            default: invalid-example
+            description: The domain of the tenant to use for this request.
+
+x-speakeasy-name-override:
+  - operationId: .*Get$
+    methodNameOverride: get

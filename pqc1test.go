@@ -122,7 +122,7 @@ func New(opts ...SDKOption) *PqC1Test {
 	sdk := &PqC1Test{
 		sdkConfiguration: sdkConfiguration{
 			Language:   "go",
-			SDKVersion: "1.0.1",
+			SDKVersion: "1.0.2",
 			GenVersion: "2.35.9",
 			ServerDefaults: []map[string]string{
 				{

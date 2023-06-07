@@ -24,9 +24,7 @@ func main() {
     s := pqc1test.New()
 
     ctx := context.Background()
-    res, err := s.User.Get(ctx, operations.C1APIUserV1UserServiceGetRequest{
-        ID: "89bd9d8d-69a6-474e-8f46-7cc8796ed151",
-    })
+    res, err := s.User.Get(ctx, "corrupti")
     if err != nil {
         log.Fatal(err)
     }

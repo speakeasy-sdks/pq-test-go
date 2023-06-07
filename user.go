@@ -24,7 +24,11 @@ func newUser(sdkConfig sdkConfiguration) *user {
 }
 
 // Get - Invokes the c1.api.user.v1.UserService.Get method.
-func (s *user) Get(ctx context.Context, request operations.C1APIUserV1UserServiceGetRequest) (*operations.C1APIUserV1UserServiceGetResponse, error) {
+func (s *user) Get(ctx context.Context, id string) (*operations.C1APIUserV1UserServiceGetResponse, error) {
+	request := operations.C1APIUserV1UserServiceGetRequest{
+		ID: id,
+	}
+
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/user/get/{id}", request, nil)
 	if err != nil {

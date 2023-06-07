@@ -22,7 +22,7 @@ jobs:
         - go
       mode: pr
       openapi_docs: |
-        - ./pq-test.yaml
+        - https://raw.githubusercontent.com/speakeasy-sdks/pq-test-go/main/pq-test.yaml
       speakeasy_version: latest
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}

@@ -2,9 +2,9 @@
 
 ### Available Operations
 
-* [Introspect](#introspect) - Invokes the c1.api.auth.v1.Auth.Introspect method.
+* [C1APIAuthV1AuthIntrospect](#c1apiauthv1authintrospect) - Invokes the c1.api.auth.v1.Auth.Introspect method.
 
-## Introspect
+## C1APIAuthV1AuthIntrospect
 
 Invokes the c1.api.auth.v1.Auth.Introspect method.
 
@@ -23,12 +23,12 @@ func main() {
     s := pqc1test.New()
 
     ctx := context.Background()
-    res, err := s.Auth.Introspect(ctx)
+    res, err := s.Auth.C1APIAuthV1AuthIntrospect(ctx)
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.IntrospectResponse != nil {
+    if res.C1APIAuthV1IntrospectResponse != nil {
         // handle response
     }
 }

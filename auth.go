@@ -24,8 +24,8 @@ func newAuth(sdkConfig sdkConfiguration) *auth {
 	}
 }
 
-// Introspect - Invokes the c1.api.auth.v1.Auth.Introspect method.
-func (s *auth) Introspect(ctx context.Context) (*operations.C1APIAuthV1AuthIntrospectResponse, error) {
+// C1APIAuthV1AuthIntrospect - Invokes the c1.api.auth.v1.Auth.Introspect method.
+func (s *auth) C1APIAuthV1AuthIntrospect(ctx context.Context) (*operations.C1APIAuthV1AuthIntrospectResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/auth/introspect"
 
@@ -34,7 +34,7 @@ func (s *auth) Introspect(ctx context.Context) (*operations.C1APIAuthV1AuthIntro
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
 
 	client := s.sdkConfiguration.DefaultClient
 
@@ -64,12 +64,12 @@ func (s *auth) Introspect(ctx context.Context) (*operations.C1APIAuthV1AuthIntro
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.IntrospectResponse
+			var out *shared.C1APIAuthV1IntrospectResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
 				return nil, err
 			}
 
-			res.IntrospectResponse = out
+			res.C1APIAuthV1IntrospectResponse = out
 		}
 	}
 

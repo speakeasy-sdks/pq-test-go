@@ -12,7 +12,7 @@ import (
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
 	// The ConductorOne API server for the current tenant.
-	"https://{tenantDomain}.pquerna.dev.ductone.com:2443",
+	"https://{tenantDomain}.conductor.one",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -42,12 +42,13 @@ type sdkConfiguration struct {
 	DefaultClient  HTTPClient
 	SecurityClient HTTPClient
 
-	ServerURL      string
-	ServerIndex    int
-	ServerDefaults []map[string]string
-	Language       string
-	SDKVersion     string
-	GenVersion     string
+	ServerURL         string
+	ServerIndex       int
+	ServerDefaults    []map[string]string
+	Language          string
+	OpenAPIDocVersion string
+	SDKVersion        string
+	GenVersion        string
 }
 
 func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
@@ -60,8 +61,11 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 
 // PqC1Test - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type PqC1Test struct {
-	Auth *auth
-	User *user
+	App            *app
+	Auth           *auth
+	Requestcatalog *requestcatalog
+	Task           *task
+	User           *user
 
 	sdkConfiguration sdkConfiguration
 }
@@ -121,9 +125,10 @@ func WithClient(client HTTPClient) SDKOption {
 func New(opts ...SDKOption) *PqC1Test {
 	sdk := &PqC1Test{
 		sdkConfiguration: sdkConfiguration{
-			Language:   "go",
-			SDKVersion: "1.0.1",
-			GenVersion: "2.35.9",
+			Language:          "go",
+			OpenAPIDocVersion: "0.1.0-alpha",
+			SDKVersion:        "1.1.0",
+			GenVersion:        "2.37.2",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "invalid-example",
@@ -143,7 +148,13 @@ func New(opts ...SDKOption) *PqC1Test {
 		sdk.sdkConfiguration.SecurityClient = sdk.sdkConfiguration.DefaultClient
 	}
 
+	sdk.App = newApp(sdk.sdkConfiguration)
+
 	sdk.Auth = newAuth(sdk.sdkConfiguration)
+
+	sdk.Requestcatalog = newRequestcatalog(sdk.sdkConfiguration)
+
+	sdk.Task = newTask(sdk.sdkConfiguration)
 
 	sdk.User = newUser(sdk.sdkConfiguration)
 

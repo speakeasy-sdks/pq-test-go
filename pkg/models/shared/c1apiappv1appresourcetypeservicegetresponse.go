@@ -2,16 +2,10 @@
 
 package shared
 
-// C1APIAppV1AppResourceTypeServiceGetResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type C1APIAppV1AppResourceTypeServiceGetResponseExpanded struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-}
-
 // C1APIAppV1AppResourceTypeServiceGetResponse - The AppResourceTypeServiceGetResponse message.
 type C1APIAppV1AppResourceTypeServiceGetResponse struct {
 	// The AppResourceTypeView message.
 	AppResourceTypeView *C1APIAppV1AppResourceTypeView `json:"appResourceTypeView,omitempty"`
 	// The expanded field.
-	Expanded []C1APIAppV1AppResourceTypeServiceGetResponseExpanded `json:"expanded,omitempty"`
+	Expanded []map[string]interface{} `json:"expanded,omitempty"`
 }

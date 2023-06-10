@@ -10,7 +10,7 @@ package shared
 //   - delegated
 type C1APIPolicyV1ProvisionPolicy struct {
 	// The ConnectorProvision message.
-	Connector map[string]interface{} `json:"connector,omitempty"`
+	Connector *C1APIPolicyV1ConnectorProvision `json:"connector,omitempty"`
 	// The DelegatedProvision message.
 	Delegated *C1APIPolicyV1DelegatedProvision `json:"delegated,omitempty"`
 	// The ManualProvision message.

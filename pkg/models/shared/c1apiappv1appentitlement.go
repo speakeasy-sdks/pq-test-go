@@ -6,6 +6,9 @@ import (
 	"time"
 )
 
+type C1APIAppV1AppEntitlementDurationUnset struct {
+}
+
 // C1APIAppV1AppEntitlement - The AppEntitlement message.
 //
 // This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
@@ -29,9 +32,9 @@ type C1APIAppV1AppEntitlement struct {
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
-	DisplayName   *string                `json:"displayName,omitempty"`
-	DurationGrant *string                `json:"durationGrant,omitempty"`
-	DurationUnset map[string]interface{} `json:"durationUnset,omitempty"`
+	DisplayName   *string                                `json:"displayName,omitempty"`
+	DurationGrant *string                                `json:"durationGrant,omitempty"`
+	DurationUnset *C1APIAppV1AppEntitlementDurationUnset `json:"durationUnset,omitempty"`
 	// The grantCount field.
 	GrantCount *string `json:"grantCount,omitempty"`
 	// The grantPolicyId field.

@@ -74,12 +74,6 @@ func (e *C1APITaskV1TaskActions) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// C1APITaskV1TaskAnnotations - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type C1APITaskV1TaskAnnotations struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-}
-
 // C1APITaskV1TaskProcessing - The processing field.
 type C1APITaskV1TaskProcessing string
 
@@ -152,7 +146,7 @@ type C1APITaskV1Task struct {
 	// The analysisId field.
 	AnalysisID *string `json:"analysisId,omitempty"`
 	// The annotations field.
-	Annotations []C1APITaskV1TaskAnnotations `json:"annotations,omitempty"`
+	Annotations []map[string]interface{} `json:"annotations,omitempty"`
 	// The commentCount field.
 	CommentCount *float64   `json:"commentCount,omitempty"`
 	CreatedAt    *time.Time `json:"createdAt,omitempty"`

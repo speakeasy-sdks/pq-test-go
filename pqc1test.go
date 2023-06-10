@@ -127,8 +127,8 @@ func New(opts ...SDKOption) *PqC1Test {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "1.1.0",
-			GenVersion:        "2.37.2",
+			SDKVersion:        "1.2.0",
+			GenVersion:        "2.39.0",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "invalid-example",
